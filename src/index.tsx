@@ -10,10 +10,10 @@ import { createStore } from 'redux';
 import {loginReducer} from './reducers/Login';
 
 // Bulma
-import './../node_modules/bulma/bulma.sass';
+import './../node_modules/bulma/css/bulma.css';
 
-// FontAwesome (TODO: Use scss instead)
-import './../node_modules/font-awesome/scss/font-awesome.scss';
+// FontAwesome
+import './../node_modules/font-awesome/css/font-awesome.css';
 
 let store = createStore(loginReducer);
 
