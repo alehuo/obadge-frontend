@@ -8,6 +8,7 @@
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"
   },
+  "proxy": "https://badgemarketplace-api.herokuapp.com",
   "dependencies": {
     "axios": "^0.17.0",
     "bulma": "^0.6.0",

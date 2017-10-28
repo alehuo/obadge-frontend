@@ -63,7 +63,7 @@ ILoginState > {
       .loggingIn();
     // Post request to authentication service
     axios
-      .post('http://localhost:8080/api/auth', {
+      .post('/api/auth', {
       email: this.state.email,
       password: this.state.password
     })

@@ -72,7 +72,7 @@ IState > {
   register = (firstName : String, lastName : String, telephone : String, email : String, password : String) => {
     // Post request to user creation service
     axios
-      .post('http://localhost:8080/api/user', {
+      .post('/api/user', {
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       email: this.state.email,
