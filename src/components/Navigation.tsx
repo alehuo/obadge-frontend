@@ -30,19 +30,19 @@ INavigationState > {
           </Link>
         </div>
         <div className="navbar-menu">
-            {this.props.isLoggedIn
-              ? <div className="navbar-start">
-                  <Link className="navbar-item" to="/about">Browse badges</Link>
-                  <div className="navbar-item">
-                    <p className="control has-icons-left is-loading">
-                      <span className="icon is-small is-left">
-                        <i className="fa fa-search"></i>
-                      </span>
-                      <input className="input" type="text" placeholder="Search for overall badges.."/>
-                    </p>
-                  </div>
+          {this.props.isLoggedIn
+            ? <div className="navbar-start">
+                <Link className="navbar-item" to="/about">Browse badges</Link>
+                <div className="navbar-item">
+                  <p className="control has-icons-left is-loading">
+                    <span className="icon is-small is-left">
+                      <i className="fa fa-search"></i>
+                    </span>
+                    <input className="input" type="text" placeholder="Search for overall badges.."/>
+                  </p>
                 </div>
-              : null}
+              </div>
+            : null}
           <div className="navbar-end">
             <div className="navbar-item has-dropdown is-hoverable">
               <a className="navbar-link">
