@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-interface IUserControlPanelState {}
+interface IUserControlPanelState { }
 
-interface IUserControlPanelProps {}
+interface IUserControlPanelProps { }
 
-class UserControlPanel extends React.Component < IUserControlPanelProps,
-IUserControlPanelState > {
+class UserControlPanel extends React.Component<IUserControlPanelProps,
+    IUserControlPanelState> {
     render() {
         return (
             <div className="container">

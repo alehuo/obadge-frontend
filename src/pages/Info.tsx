@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-interface IInfoProps {}
+interface InfoProps {}
 
-interface IInfoState {}
+interface InfoState {}
 
-class Info extends React.Component < IInfoProps,
-IInfoState > {
+class Info extends React.Component < InfoProps,
+InfoState > {
   render() {
     return (
       <div>

@@ -1,24 +1,24 @@
 // Login reducer is used to handle the login process.
-import {LOGGING_IN, LOGGED_IN, LOGIN_FAILED_INVALID_CREDS, LOGIN_FAILED_SERVER_ERROR} from '../constants';
+import { LOGGING_IN, LOGGED_IN, LOGIN_FAILED_INVALID_CREDS, LOGIN_FAILED_SERVER_ERROR } from '../constants';
 
 // Assign
 const assign = Object.assign;
 
 // Interface for initial state
 export interface ILoginInitialState {
-    isLoggingIn : boolean,
-    isLoggedIn : boolean,
-    loginErrors : string[]
+    isLoggingIn: boolean;
+    isLoggedIn: boolean;
+    loginErrors: string[];
 }
 
 // Initial state of the app
-const initialState : ILoginInitialState = {
+const initialState: ILoginInitialState = {
     isLoggingIn: false,
     isLoggedIn: false,
     loginErrors: []
 };
 
-export function loginReducer(state : ILoginInitialState = initialState, action : any) : ILoginInitialState {
+export function loginReducer(state: ILoginInitialState = initialState, action: any): ILoginInitialState {
     console.log('Executing action %s', action.type);
     switch (action.type) {
         case LOGGING_IN:

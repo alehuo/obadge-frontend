@@ -1,26 +1,26 @@
 import * as React from 'react';
 
-import axios, {AxiosResponse} from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 let Dropzone = require('react-dropzone').default;
 
-interface IAddBadgeProps {}
+interface IAddBadgeProps { }
 
 interface IAddBadgeState {
-  title : string,
-  description : string,
-  price : string,
-  isAdding : boolean,
-  addingSuccessful : boolean,
-  errors : string[],
-  accepted : File[],
-  rejected : File[]
+  title: string;
+  description: string;
+  price: string;
+  isAdding: boolean;
+  addingSuccessful: boolean;
+  errors: string[];
+  accepted: File[];
+  rejected: File[];
 }
 
-class AddBadge extends React.Component < IAddBadgeProps,
-IAddBadgeState > {
+class AddBadge extends React.Component<IAddBadgeProps,
+  IAddBadgeState> {
 
-  constructor(props : IAddBadgeProps) {
+  constructor(props: IAddBadgeProps) {
     super(props);
     this.state = {
       title: '',
@@ -34,54 +34,54 @@ IAddBadgeState > {
     };
   }
 
-  handleTitleChange = (event : any) : void => {
-    this.setState({title: event.target.value});
+  handleTitleChange = (event: any): void => {
+    this.setState({ title: event.target.value });
   }
 
-  handleDescriptionChange = (event : any) : void => {
-    this.setState({description: event.target.value});
+  handleDescriptionChange = (event: any): void => {
+    this.setState({ description: event.target.value });
   }
 
-  handlePriceChange = (event : any) : void => {
-    this.setState({price: event.target.value});
+  handlePriceChange = (event: any): void => {
+    this.setState({ price: event.target.value });
   }
 
-  handleFormSubmit = (event : any) : void => {
+  handleFormSubmit = (event: any): void => {
     event.preventDefault();
-    this.setState({isAdding: true, errors: []});
+    this.setState({ isAdding: true, errors: [] });
     this.addBadge(this.state.title, this.state.description);
   }
 
-  addBadge = (badgeTitle : String, badgeDescription : String) : void => {
+  addBadge = (badgeTitle: String, badgeDescription: String): void => {
     // Post request to user creation service
     axios
-      .post('http://localhost:8080/api/badge', {
-      title: badgeTitle,
-      description: badgeDescription
-    })
-      .then((res : AxiosResponse) => {
+      .post('/api/badge', {
+        title: badgeTitle,
+        description: badgeDescription
+      })
+      .then((res: AxiosResponse) => {
         if (res.data.success) {
           console.log(res.data);
-          this.setState({isAdding: false});
-          this.setState({addingSuccessful: true});
+          this.setState({ isAdding: false });
+          this.setState({ addingSuccessful: true });
         } else {
           // Authentication failed. Show errors from server.
-          this.setState({errors: res.data.errors});
-          this.setState({isAdding: false});
+          this.setState({ errors: res.data.errors });
+          this.setState({ isAdding: false });
         }
       })
       .catch((err) => {
         // Request failed
-        this.setState({errors: ['Error sending request to server, please try again later']});
-        this.setState({isAdding: false});
+        this.setState({ errors: ['Error sending request to server, please try again later'] });
+        this.setState({ isAdding: false });
       });
   }
 
-  errorMsg = (message : String) : React.ReactElement < any > => {
+  errorMsg = (message: String): React.ReactElement<any> => {
     return <div className="notification is-danger">{message}</div>;
   }
 
-  successMsg = (message : String) : React.ReactElement < any > => {
+  successMsg = (message: String): React.ReactElement<any> => {
     return <div className="notification is-success">{message}</div>;
   }
 
@@ -112,7 +112,7 @@ IAddBadgeState > {
             {this
               .state
               .errors
-              .map((entry : String) => this.errorMsg(entry))}
+              .map((entry: String) => this.errorMsg(entry))}
             <div className="field">
               <p className="control has-icons-left has-icons-right">
                 <input
@@ -120,9 +120,10 @@ IAddBadgeState > {
                   type="text"
                   placeholder="Title"
                   value={this.state.title}
-                  onChange={this.handleTitleChange}/>
+                  onChange={this.handleTitleChange}
+                />
                 <span className="icon is-small is-left">
-                  <i className="fa fa-address-card"></i>
+                  <i className="fa fa-address-card" />
                 </span>
               </p>
             </div>
@@ -133,7 +134,8 @@ IAddBadgeState > {
                   type="text"
                   placeholder="Price per badge E.g. 2.50"
                   value={this.state.price}
-                  onChange={this.handlePriceChange}/>
+                  onChange={this.handlePriceChange}
+                />
               </p>
               <p className="control">
                 <a className="button is-static">
@@ -143,30 +145,32 @@ IAddBadgeState > {
             </div>
             <div className="field">
               <Dropzone
-                onDrop={(accepted : File[], rejected : File[]) => {
-                this.setState({accepted, rejected});
-              }}
-                accept='image/jpg, image/jpeg, image/png'>
+                onDrop={(accepted: File[], rejected: File[]) => {
+                  this.setState({ accepted, rejected });
+                }}
+                accept="image/jpg, image/jpeg, image/png"
+              >
                 <p>Drag and drop images here or click to browse.</p>
               </Dropzone>
               <section className="section">
                 {this
                   .state
                   .accepted
-                  .map((f : any) => <div className="block" style={blockStyle}>
-                    <img src={f.preview} width={160} style={imgStyle}/>
-                    <button className="delete is-small" onClick={() => {}}></button>
+                  .map((f: any) => <div className="block" key={f.name} style={blockStyle}>
+                    <img src={f.preview} width={160} style={imgStyle} />
+                    <button className="delete is-small" onClick={(event) => { event.preventDefault(); }} />
                   </div>)
-}
+                }
               </section>
             </div>
             <div className="field">
               <p className="control">
                 <button
                   className={this.state.isAdding
-                  ? 'button is-success is-loading'
-                  : 'button is-success'}
-                  type="submit">
+                    ? 'button is-success is-loading'
+                    : 'button is-success'}
+                  type="submit"
+                >
                   Add
                 </button>
               </p>

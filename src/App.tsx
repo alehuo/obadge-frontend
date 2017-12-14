@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import {Provider} from 'react-redux'
-import {createStore} from 'redux'
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 
 // Pages
 import Login from './pages/Login';
@@ -14,45 +14,45 @@ import UserControlPanel from './pages/UserControlPanel';
 import Navigation from './components/Navigation';
 
 // Routing
-import {Route} from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 // Login recucer
-import {loginReducer} from './reducers/Login';
+import { loginReducer } from './reducers/Login';
 
 // App props
-interface IAppProps {}
+interface IAppProps { }
 
 // App state
 interface IAppState {
-  loggedIn : boolean;
-  loggingIn : boolean;
+  loggedIn: boolean;
+  loggingIn: boolean;
 }
 
 // Create the store
 let store = createStore(loginReducer);
 
-class App extends React.Component < IAppProps,
-IAppState > {
+class App extends React.Component<IAppProps,
+  IAppState> {
 
-  constructor(props : IAppProps) {
+  constructor(props: IAppProps) {
     super(props);
     this.state = {
       loggedIn: false,
       loggingIn: false
-    }
+    };
   }
 
   render() {
     return (
       <Provider store={store}>
         <div className="App">
-          <Navigation/>
-          <Route exact path="/" component={Info}/>
+          <Navigation />
+          <Route exact={true} path="/" component={Info} />
           <section className="section">
-            <Route path="/user/login" component={Login}/>
-            <Route path="/user/register" component={Register}/>
-            <Route path="/badge/add" component={AddBadge}/>
-            <Route path="/user/settings" component={UserControlPanel}/>
+            <Route path="/user/login" component={Login} />
+            <Route path="/user/register" component={Register} />
+            <Route path="/badge/add" component={AddBadge} />
+            <Route path="/user/settings" component={UserControlPanel} />
           </section>
         </div>
       </Provider>

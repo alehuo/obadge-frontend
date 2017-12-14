@@ -1,38 +1,38 @@
 import * as React from 'react';
 
-import axios, {AxiosResponse} from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 // Login props
 export interface ILoginProps {
-  isLoggingIn : boolean,
-  isLoggedIn : boolean,
-  loginErrors : string[]
+  isLoggingIn: boolean;
+  isLoggedIn: boolean;
+  loginErrors: string[];
 }
 
 // Dispatch props
 export interface ILoginDispatchProps {
-  loggingIn : () => void,
-  loggedIn : () => void,
-  loginFailedInvalidCreds : () => void,
-  loginFailedServerError : () => void
+  loggingIn: () => void;
+  loggedIn: () => void;
+  loginFailedInvalidCreds: () => void;
+  loginFailedServerError: () => void;
 }
 
 // Login state
 export interface ILoginState {
-  email : string,
-  password : string,
-  isLoggingIn : boolean,
-  isLoggedIn : boolean,
-  loginErrors : string[]
+  email: string;
+  password: string;
+  isLoggingIn: boolean;
+  isLoggedIn: boolean;
+  loginErrors: string[];
 }
 
 // Login component
-class Login extends React.Component < ILoginProps & ILoginDispatchProps,
-ILoginState > {
+class Login extends React.Component<ILoginProps & ILoginDispatchProps,
+  ILoginState> {
 
-  constructor(props : ILoginProps & ILoginDispatchProps) {
+  constructor(props: ILoginProps & ILoginDispatchProps) {
     super(props);
     this.state = {
       email: '',
@@ -43,58 +43,55 @@ ILoginState > {
     };
   }
 
-  handleEmailChange = (event : any) : void => {
-    this.setState({email: event.target.value});
+  handleEmailChange = (event: any): void => {
+    this.setState({ email: event.target.value });
   }
 
-  handlePasswordChange = (event : any) : void => {
-    this.setState({password: event.target.value});
+  handlePasswordChange = (event: any): void => {
+    this.setState({ password: event.target.value });
   }
 
-  handleFormSubmit = (event : any) : void => {
+  handleFormSubmit = (event: any): void => {
     event.preventDefault();
     this.login(this.state.email, this.state.password);
   }
 
-  login = (email : String, password : String) : void => {
+  login = (email: String, password: String): void => {
     // Dispatch loggingIn -event
     this
       .props
       .loggingIn();
     // Post request to authentication service
     axios
-      .post('/api/auth', {
-      email: this.state.email,
-      password: this.state.password
-    })
-      .then((res : AxiosResponse) => {
+      .post('/api/authentication', {
+        email: this.state.email,
+        password: this.state.password
+      })
+      .then((res: AxiosResponse) => {
         if (res.data.success) {
           // Login is a success. Redirect to front page
-          /*var authToken = res.data.token;
+          var authToken = res.data.payload.token;
           localStorage.setItem('token', authToken);
-          console.log(authToken);*/
+          console.log(authToken);
           this
             .props
             .loggedIn();
-        } else {
-          this
-            .props
-            .loginFailedInvalidCreds();
+          window.location.href = '/';
         }
       })
-      .catch((err : Error) => {
+      .catch((err: Error) => {
         // Request failed
         this
           .props
-          .loginFailedServerError();
+          .loginFailedInvalidCreds();
       });
   }
 
-  errorMsg = (message : String) : React.ReactElement < {} > => {
+  errorMsg = (message: String): React.ReactElement<{}> => {
     return <div className="notification is-danger">{message}</div>;
   }
 
-  successMsg = (message : String) : React.ReactElement < {} > => {
+  successMsg = (message: String): React.ReactElement<{}> => {
     return <div className="notification is-success">{message}</div>;
   }
 
@@ -114,12 +111,13 @@ ILoginState > {
                 type="email"
                 placeholder="Email"
                 value={this.state.email}
-                onChange={this.handleEmailChange}/>
+                onChange={this.handleEmailChange}
+              />
               <span className="icon is-small is-left">
-                <i className="fa fa-envelope"></i>
+                <i className="fa fa-envelope" />
               </span>
               <span className="icon is-small is-right">
-                <i className="fa fa-check"></i>
+                <i className="fa fa-check" />
               </span>
             </p>
           </div>
@@ -130,9 +128,10 @@ ILoginState > {
                 type="password"
                 placeholder="Password"
                 value={this.state.password}
-                onChange={this.handlePasswordChange}/>
+                onChange={this.handlePasswordChange}
+              />
               <span className="icon is-small is-left">
-                <i className="fa fa-lock"></i>
+                <i className="fa fa-lock" />
               </span>
             </p>
           </div>
@@ -140,9 +139,10 @@ ILoginState > {
             <p className="control">
               <button
                 className={this.props.isLoggingIn
-                ? "button is-success is-loading"
-                : "button is-success"}
-                type="submit">
+                  ? 'button is-success is-loading'
+                  : 'button is-success'}
+                type="submit"
+              >
                 Login
               </button>
             </p>
@@ -155,20 +155,20 @@ ILoginState > {
   }
 }
 
-export function mapStateToProps(state : ILoginState) {
-  return {isLoggingIn: state.isLoggingIn, isLoggedIn: state.isLoggedIn, loginErrors: state.loginErrors};
+export function mapStateToProps(state: ILoginState) {
+  return { isLoggingIn: state.isLoggingIn, isLoggedIn: state.isLoggedIn, loginErrors: state.loginErrors };
 }
 
-export function mapDispatchToProps(dispatch : any) {
+export function mapDispatchToProps(dispatch: any) {
   return {
-    loggingIn: () => dispatch({type: 'LOGGING_IN'}),
-    loggedIn: () => dispatch({type: 'LOGGED_IN'}),
-    loginFailedInvalidCreds: () => dispatch({type: 'LOGIN_FAILED_INVALID_CREDS'}),
-    loginFailedServerError: () => dispatch({type: 'LOGIN_FAILED_SERVER_ERROR'})
-  }
+    loggingIn: () => dispatch({ type: 'LOGGING_IN' }),
+    loggedIn: () => dispatch({ type: 'LOGGED_IN' }),
+    loginFailedInvalidCreds: () => dispatch({ type: 'LOGIN_FAILED_INVALID_CREDS' }),
+    loginFailedServerError: () => dispatch({ type: 'LOGIN_FAILED_SERVER_ERROR' })
+  };
 }
 
-export function mergeProps(stateProps : Object, dispatchProps : Object, ownProps : Object) {
+export function mergeProps(stateProps: Object, dispatchProps: Object, ownProps: Object) {
   return Object.assign({}, ownProps, stateProps, dispatchProps);
 }
 

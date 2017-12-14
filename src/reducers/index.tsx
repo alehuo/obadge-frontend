@@ -1,9 +1,9 @@
-import {combineReducers} from 'redux'
+import { combineReducers } from 'redux';
 
 // Data reducer
-import {loginReducer} from './Login';
+import { loginReducer } from './Login';
 
 // Combine reducers
-const obadge : {} = combineReducers < {} > ({loginReducer})
+const obadge: {} = combineReducers<{}>({ loginReducer });
 
-export default obadge
+export default obadge;
