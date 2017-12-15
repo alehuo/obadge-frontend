@@ -5,12 +5,14 @@ import { connect } from 'react-redux';
 
 // Navigation props
 interface INavigationProps {
+  id: number;
+  email: string;
   isLoggedIn: boolean;
 }
 
 // Navigation state
 interface INavigationState {
-  isLoggedIn: boolean;
+
 }
 
 class Navigation extends React.Component<INavigationProps,
@@ -32,7 +34,7 @@ class Navigation extends React.Component<INavigationProps,
         <div className="navbar-menu">
           {this.props.isLoggedIn
             ? <div className="navbar-start">
-              <Link className="navbar-item" to="/about">Browse badges</Link>
+              <Link className="navbar-item" to="/browse">Browse badges</Link>
               <div className="navbar-item">
                 <p className="control has-icons-left is-loading">
                   <span className="icon is-small is-left">
@@ -46,7 +48,7 @@ class Navigation extends React.Component<INavigationProps,
           <div className="navbar-end">
             <div className="navbar-item has-dropdown is-hoverable">
               <a className="navbar-link">
-                Account
+                {this.props.email}
               </a>
               <div className="navbar-dropdown is-boxed is-right">
                 {!this.props.isLoggedIn
@@ -58,19 +60,19 @@ class Navigation extends React.Component<INavigationProps,
                   )
                   : (
                     <div>
-                      <a className="navbar-item ">
+                      <Link className="navbar-item" to="/user/orders">
                         <span className="icon">
                           <i className="fa fa-shopping-cart" aria-hidden="true" />
                         </span>
                         My orders
-                      </a>
-                      <a className="navbar-item">
+                      </Link>
+                      <Link className="navbar-item" to="/user/settings">
                         <span className="icon">
                           <i className="fa fa-cog" aria-hidden="true" />
                         </span>
                         Settings
-                      </a>
-                      <a className="navbar-item">
+                      </Link>
+                      <a className="navbar-item" onClick={() => { alert('logout'); }}>
                         <span className="icon">
                           <i className="fa fa-sign-out" aria-hidden="true" />
                         </span>
@@ -88,8 +90,8 @@ class Navigation extends React.Component<INavigationProps,
   }
 }
 
-export function mapStateToProps(state: INavigationState) {
-  return { isLoggedIn: state.isLoggedIn };
+export function mapStateToProps({ login, user }: any) {
+  return { isLoggedIn: login.isLoggedIn, id: user.id, email: user.email };
 }
 
 export function mergeProps(stateProps: Object, dispatchProps: Object, ownProps: Object) {

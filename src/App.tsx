@@ -1,7 +1,6 @@
 import * as React from 'react';
 
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { connect } from 'react-redux';
 
 // Pages
 import Login from './pages/Login';
@@ -10,54 +9,87 @@ import Info from './pages/Info';
 import AddBadge from './pages/AddBadge';
 import UserControlPanel from './pages/UserControlPanel';
 
+import axios, { AxiosResponse } from 'axios';
+
 // Nav
 import Navigation from './components/Navigation';
 
 // Routing
 import { Route } from 'react-router-dom';
-
-// Login recucer
-import { loginReducer } from './reducers/Login';
+import { withRouter, Switch } from 'react-router';
+import AddressBook from './pages/AddressBook';
+import NotFound from './pages/NotFound';
 
 // App props
-interface IAppProps { }
-
-// App state
-interface IAppState {
-  loggedIn: boolean;
-  loggingIn: boolean;
+export interface IAppProps {
 }
 
-// Create the store
-let store = createStore(loginReducer);
+export interface IAppDispatchProps {
+  setData?: (data: any) => void;
+  loggedIn?: () => void;
+}
 
-class App extends React.Component<IAppProps,
+// App state
+export interface IAppState {
+
+}
+
+class App extends React.Component<IAppProps & IAppDispatchProps,
   IAppState> {
 
-  constructor(props: IAppProps) {
+  constructor(props: IAppProps & IAppDispatchProps) {
     super(props);
     this.state = {
-      loggedIn: false,
-      loggingIn: false
+      id: -1,
+      firstName: '',
+      lastName: '',
+      email: ''
     };
+  }
+
+  componentDidMount() {
+    axios.get('/api/authentication').then((res: AxiosResponse) => {
+      if (this.props.setData !== undefined && this.props.loggedIn !== undefined) {
+        this.props.setData(JSON.parse(res.data.payload.data)[0]);
+        this.props.loggedIn();
+      }
+    }).catch((err: any) => {
+      // console.log(err);
+    });
   }
 
   render() {
     return (
-      <Provider store={store}>
-        <div className="App">
-          <Navigation />
+      <div className="App">
+        <Navigation />
+        <Switch>
           <Route exact={true} path="/" component={Info} />
-          <section className="section">
-            <Route path="/user/login" component={Login} />
-            <Route path="/user/register" component={Register} />
-            <Route path="/badge/add" component={AddBadge} />
-            <Route path="/user/settings" component={UserControlPanel} />
-          </section>
-        </div>
-      </Provider>
+          <Route exact={true} path="user/login" component={Login} />
+          <Route exact={true} path="user/register" component={Register} />
+          <Route exact={true} path="badge/add" component={AddBadge} />
+          <Route path="/user/settings" component={UserControlPanel}>
+            <Route path="addressbook" component={AddressBook} />
+          </Route>
+          <Route component={NotFound} />
+        </Switch>
+      </div>
     );
   }
 }
 
-export default App;
+export function mapStateToProps(state: IAppState) {
+  return {};
+}
+
+export function mapDispatchToProps(dispatch: any) {
+  return {
+    setData: (data: any) => dispatch({ type: 'SET_DATA', userData: data }),
+    loggedIn: () => dispatch({ type: 'LOGGED_IN' })
+  };
+}
+
+export function mergeProps(stateProps: Object, dispatchProps: Object, ownProps: Object) {
+  return Object.assign({}, ownProps, stateProps, dispatchProps);
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps, mergeProps)(App));

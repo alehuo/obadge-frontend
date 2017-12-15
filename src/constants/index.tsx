@@ -12,3 +12,6 @@ export const REGISTERING_FAILED = 'REGISTERING_FAILED';
 // Set error message
 export const SET_ERROR_MSG = 'SET_ERROR_MSG';
 export const CLEAR_ERROR_MSG = 'CLEAR_ERROR_MSG';
+// User data setting
+export const SET_DATA = 'SET_DATA';
+export const DATA_SET = 'USER_DATA_SET';

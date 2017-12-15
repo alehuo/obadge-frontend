@@ -19,7 +19,6 @@ const initialState: ILoginInitialState = {
 };
 
 export function loginReducer(state: ILoginInitialState = initialState, action: any): ILoginInitialState {
-    console.log('Executing action %s', action.type);
     switch (action.type) {
         case LOGGING_IN:
             return assign({}, state, {

@@ -5,9 +5,10 @@ import registerServiceWorker from './registerServiceWorker';
 
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 
-import { loginReducer } from './reducers/Login';
+import obadge from './reducers/index';
+import logger from './middleware/LoggerMiddleware';
 
 // Bulma
 import './../node_modules/bulma/css/bulma.css';
@@ -15,7 +16,7 @@ import './../node_modules/bulma/css/bulma.css';
 // FontAwesome
 import './../node_modules/font-awesome/css/font-awesome.css';
 
-let store = createStore(loginReducer);
+let store = createStore(obadge, applyMiddleware(logger));
 
 ReactDOM.render(
   <BrowserRouter>

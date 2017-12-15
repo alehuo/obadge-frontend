@@ -120,119 +120,123 @@ class Register extends React.Component<IProps,
     // If the registration is successful show a message.
     if (this.state.registrationSuccessful && !this.state.isRegistering) {
       return (
-        <div className="container">
-          <h1 className="title">Register</h1>
-          {this.successMsg('Your account has been created successfully. Please follow the link sent to your ' +
-            'email to activate your account.')}
-        </div>
+        <section className="section">
+          <div className="container">
+            <h1 className="title">Register</h1>
+            {this.successMsg('Your account has been created successfully. Please follow the link sent to your ' +
+              'email to activate your account.')}
+          </div>
+        </section>
       );
     } else {
       return (
-        <form onSubmit={this.handleFormSubmit}>
-          <div className="container">
-            <h1 className="title">Register</h1>
-            {this
-              .state
-              .errors
-              .map((entry: String) => this.errorMsg(entry))}
-            <div className="field">
-              <p className="control has-icons-left has-icons-right">
-                <input
-                  className="input"
-                  type="text"
-                  placeholder="First name"
-                  value={this.state.firstName}
-                  onChange={this.handleFirstNameChange}
-                />
-                <span className="icon is-small is-left">
-                  <i className="fa fa-address-card" />
-                </span>
-              </p>
-            </div>
-            <div className="field">
-              <p className="control has-icons-left has-icons-right">
-                <input
-                  className="input"
-                  type="text"
-                  placeholder="Last name"
-                  value={this.state.lastName}
-                  onChange={this.handleLastNameChange}
-                />
-                <span className="icon is-small is-left">
-                  <i className="fa fa-address-card" />
-                </span>
-              </p>
-            </div>
-            <div className="field">
-              <p className="control has-icons-left has-icons-right">
-                <input
-                  className="input"
-                  type="text"
-                  placeholder="Telephone"
-                  value={this.state.telephone}
-                  onChange={this.handleTelephoneChange}
-                />
-                <span className="icon is-small is-left">
-                  <i className="fa fa-phone" />
-                </span>
-              </p>
-            </div>
-            <div className="field">
-              <p className="control has-icons-left has-icons-right">
-                <input
-                  className="input"
-                  type="email"
-                  placeholder="Email"
-                  value={this.state.email}
-                  onChange={this.handleEmailChange}
-                />
-                <span className="icon is-small is-left">
-                  <i className="fa fa-envelope" />
-                </span>
-              </p>
-            </div>
-            <div className="field">
-              <p className="control has-icons-left">
-                <input
-                  className="input"
-                  type="password"
-                  placeholder="Password"
-                  value={this.state.password}
-                  onChange={this.handlePasswordChange}
-                />
-                <span className="icon is-small is-left">
-                  <i className="fa fa-lock" />
-                </span>
-              </p>
-            </div>
-            <div className="field">
-              <p className="control">
-                <input
-                  type="checkbox"
-                  name="termsAndConditions"
-                  onChange={this.termsAndConditionsChange}
-                  checked={this.state.termsAndConditionsChecked}
-                />
-                &nbsp;&nbsp;I agree to the&nbsp;
+        <section className="section">
+          <form onSubmit={this.handleFormSubmit}>
+            <div className="container">
+              <h1 className="title">Register</h1>
+              {this
+                .state
+                .errors
+                .map((entry: String) => this.errorMsg(entry))}
+              <div className="field">
+                <p className="control has-icons-left has-icons-right">
+                  <input
+                    className="input"
+                    type="text"
+                    placeholder="First name"
+                    value={this.state.firstName}
+                    onChange={this.handleFirstNameChange}
+                  />
+                  <span className="icon is-small is-left">
+                    <i className="fa fa-address-card" />
+                  </span>
+                </p>
+              </div>
+              <div className="field">
+                <p className="control has-icons-left has-icons-right">
+                  <input
+                    className="input"
+                    type="text"
+                    placeholder="Last name"
+                    value={this.state.lastName}
+                    onChange={this.handleLastNameChange}
+                  />
+                  <span className="icon is-small is-left">
+                    <i className="fa fa-address-card" />
+                  </span>
+                </p>
+              </div>
+              <div className="field">
+                <p className="control has-icons-left has-icons-right">
+                  <input
+                    className="input"
+                    type="text"
+                    placeholder="Telephone"
+                    value={this.state.telephone}
+                    onChange={this.handleTelephoneChange}
+                  />
+                  <span className="icon is-small is-left">
+                    <i className="fa fa-phone" />
+                  </span>
+                </p>
+              </div>
+              <div className="field">
+                <p className="control has-icons-left has-icons-right">
+                  <input
+                    className="input"
+                    type="email"
+                    placeholder="Email"
+                    value={this.state.email}
+                    onChange={this.handleEmailChange}
+                  />
+                  <span className="icon is-small is-left">
+                    <i className="fa fa-envelope" />
+                  </span>
+                </p>
+              </div>
+              <div className="field">
+                <p className="control has-icons-left">
+                  <input
+                    className="input"
+                    type="password"
+                    placeholder="Password"
+                    value={this.state.password}
+                    onChange={this.handlePasswordChange}
+                  />
+                  <span className="icon is-small is-left">
+                    <i className="fa fa-lock" />
+                  </span>
+                </p>
+              </div>
+              <div className="field">
+                <p className="control">
+                  <input
+                    type="checkbox"
+                    name="termsAndConditions"
+                    onChange={this.termsAndConditionsChange}
+                    checked={this.state.termsAndConditionsChecked}
+                  />
+                  &nbsp;&nbsp;I agree to the&nbsp;
                 <Link to="/terms_and_conditions" target="_blank">Terms and conditions</Link>
-                &nbsp;of this service
+                  &nbsp;of this service
               </p>
-            </div>
-            <div className="field">
-              <p className="control">
-                <button
-                  disabled={!this.state.termsAndConditionsChecked}
-                  className={this.state.isRegistering
-                    ? 'button is-success is-loading'
-                    : 'button is-success'}
-                  type="submit"
-                >
-                  Register
+              </div>
+              <div className="field">
+                <p className="control">
+                  <button
+                    disabled={!this.state.termsAndConditionsChecked}
+                    className={this.state.isRegistering
+                      ? 'button is-success is-loading'
+                      : 'button is-success'}
+                    type="submit"
+                  >
+                    Register
                 </button>
-              </p>
+                </p>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </section>
       );
     }
 

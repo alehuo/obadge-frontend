@@ -1,0 +1,13 @@
+import * as React from 'react';
+
+class AddressBook extends React.Component {
+    render() {
+        return (
+            <div>
+                <h1>Address book</h1>
+            </div>
+        );
+    }
+}
+
+export default AddressBook;

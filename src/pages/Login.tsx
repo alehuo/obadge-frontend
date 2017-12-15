@@ -3,6 +3,7 @@ import * as React from 'react';
 import axios, { AxiosResponse } from 'axios';
 
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 
 // Login props
 export interface ILoginProps {
@@ -17,6 +18,7 @@ export interface ILoginDispatchProps {
   loggedIn: () => void;
   loginFailedInvalidCreds: () => void;
   loginFailedServerError: () => void;
+  setData: () => void;
 }
 
 // Login state
@@ -70,13 +72,9 @@ class Login extends React.Component<ILoginProps & ILoginDispatchProps,
       .then((res: AxiosResponse) => {
         if (res.data.success) {
           // Login is a success. Redirect to front page
-          var authToken = res.data.payload.token;
-          localStorage.setItem('token', authToken);
-          console.log(authToken);
           this
             .props
             .loggedIn();
-          window.location.href = '/';
         }
       })
       .catch((err: Error) => {
@@ -96,67 +94,77 @@ class Login extends React.Component<ILoginProps & ILoginDispatchProps,
   }
 
   render() {
+    if (this.props.isLoggedIn) {
+      return <Redirect to="/" exact={true} />;
+    }
+
     return (
-      <form onSubmit={this.handleFormSubmit}>
-        <div className="container">
-          <h1 className="title">Login</h1>
-          {this
-            .props
-            .loginErrors
-            .map((entry) => this.errorMsg(entry))}
-          <div className="field">
-            <p className="control has-icons-left has-icons-right">
-              <input
-                className="input"
-                type="email"
-                placeholder="Email"
-                value={this.state.email}
-                onChange={this.handleEmailChange}
-              />
-              <span className="icon is-small is-left">
-                <i className="fa fa-envelope" />
-              </span>
-              <span className="icon is-small is-right">
-                <i className="fa fa-check" />
-              </span>
-            </p>
-          </div>
-          <div className="field">
-            <p className="control has-icons-left">
-              <input
-                className="input"
-                type="password"
-                placeholder="Password"
-                value={this.state.password}
-                onChange={this.handlePasswordChange}
-              />
-              <span className="icon is-small is-left">
-                <i className="fa fa-lock" />
-              </span>
-            </p>
-          </div>
-          <div className="field">
-            <p className="control">
-              <button
-                className={this.props.isLoggingIn
-                  ? 'button is-success is-loading'
-                  : 'button is-success'}
-                type="submit"
-              >
-                Login
-              </button>
-            </p>
+      <section className="section">
+        <form onSubmit={this.handleFormSubmit}>
+          <div className="container">
+            <h1 className="title">Login</h1>
+            {this
+              .props
+              .loginErrors
+              .map((entry) => this.errorMsg(entry))}
+            <div className="field">
+              <p className="control has-icons-left has-icons-right">
+                <input
+                  className="input"
+                  type="email"
+                  placeholder="Email"
+                  value={this.state.email}
+                  onChange={this.handleEmailChange}
+                />
+                <span className="icon is-small is-left">
+                  <i className="fa fa-envelope" />
+                </span>
+                <span className="icon is-small is-right">
+                  <i className="fa fa-check" />
+                </span>
+              </p>
+            </div>
+            <div className="field">
+              <p className="control has-icons-left">
+                <input
+                  className="input"
+                  type="password"
+                  placeholder="Password"
+                  value={this.state.password}
+                  onChange={this.handlePasswordChange}
+                />
+                <span className="icon is-small is-left">
+                  <i className="fa fa-lock" />
+                </span>
+              </p>
+            </div>
+            <div className="field">
+              <p className="control">
+                <button
+                  className={this.props.isLoggingIn
+                    ? 'button is-success is-loading'
+                    : 'button is-success'}
+                  type="submit"
+                >
+                  Login
+                </button>
+              </p>
+
+            </div>
 
           </div>
-
-        </div>
-      </form>
+        </form>
+      </section>
     );
   }
 }
 
-export function mapStateToProps(state: ILoginState) {
-  return { isLoggingIn: state.isLoggingIn, isLoggedIn: state.isLoggedIn, loginErrors: state.loginErrors };
+export function mapStateToProps({ login, user }: any) {
+  return {
+    isLoggingIn: login.isLoggingIn,
+    isLoggedIn: login.isLoggedIn,
+    loginErrors: login.loginErrors
+  };
 }
 
 export function mapDispatchToProps(dispatch: any) {
@@ -164,7 +172,8 @@ export function mapDispatchToProps(dispatch: any) {
     loggingIn: () => dispatch({ type: 'LOGGING_IN' }),
     loggedIn: () => dispatch({ type: 'LOGGED_IN' }),
     loginFailedInvalidCreds: () => dispatch({ type: 'LOGIN_FAILED_INVALID_CREDS' }),
-    loginFailedServerError: () => dispatch({ type: 'LOGIN_FAILED_SERVER_ERROR' })
+    loginFailedServerError: () => dispatch({ type: 'LOGIN_FAILED_SERVER_ERROR' }),
+    setData: () => dispatch({ type: 'SET_DATA', userData: 'HelloWorld' })
   };
 }
 
