@@ -9,8 +9,6 @@ import Info from './pages/Info';
 import AddBadge from './pages/AddBadge';
 import UserControlPanel from './pages/UserControlPanel';
 
-import axios, { AxiosResponse } from 'axios';
-
 // Nav
 import Navigation from './components/Navigation';
 
@@ -19,6 +17,9 @@ import { Route } from 'react-router-dom';
 import { withRouter, Switch } from 'react-router';
 import AddressBook from './pages/AddressBook';
 import NotFound from './pages/NotFound';
+
+import * as jwt from 'jsonwebtoken';
+import Logout from './pages/Logout';
 
 // App props
 export interface IAppProps {
@@ -48,14 +49,14 @@ class App extends React.Component<IAppProps & IAppDispatchProps,
   }
 
   componentDidMount() {
-    axios.get('/api/authentication').then((res: AxiosResponse) => {
-      if (this.props.setData !== undefined && this.props.loggedIn !== undefined) {
-        this.props.setData(JSON.parse(res.data.payload.data)[0]);
+    let token: string | null = localStorage.getItem('token');
+    if (token !== null && this.props.setData !== undefined && this.props.loggedIn !== undefined) {
+      let userData: any = jwt.decode(token);
+      if (userData != null) {
+        this.props.setData(JSON.parse(userData.data)[0]);
         this.props.loggedIn();
       }
-    }).catch((err: any) => {
-      // console.log(err);
-    });
+    }
   }
 
   render() {
@@ -64,11 +65,12 @@ class App extends React.Component<IAppProps & IAppDispatchProps,
         <Navigation />
         <Switch>
           <Route exact={true} path="/" component={Info} />
-          <Route exact={true} path="user/login" component={Login} />
-          <Route exact={true} path="user/register" component={Register} />
-          <Route exact={true} path="badge/add" component={AddBadge} />
+          <Route exact={true} path="/user/login" component={Login} />
+          <Route exact={true} path="/user/logout" component={Logout} />
+          <Route exact={true} path="/user/register" component={Register} />
+          <Route exact={true} path="/badge/add" component={AddBadge} />
           <Route path="/user/settings" component={UserControlPanel}>
-            <Route path="addressbook" component={AddressBook} />
+            <Route path="/addressbook" component={AddressBook} />
           </Route>
           <Route component={NotFound} />
         </Switch>

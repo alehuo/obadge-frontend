@@ -8,6 +8,7 @@ interface INavigationProps {
   id: number;
   email: string;
   isLoggedIn: boolean;
+  isSearching: boolean;
 }
 
 // Navigation state
@@ -36,7 +37,7 @@ class Navigation extends React.Component<INavigationProps,
             ? <div className="navbar-start">
               <Link className="navbar-item" to="/browse">Browse badges</Link>
               <div className="navbar-item">
-                <p className="control has-icons-left is-loading">
+                <p className={this.props.isSearching ? 'control has-icons-left is-loading' : 'control has-icons-left'}>
                   <span className="icon is-small is-left">
                     <i className="fa fa-search" />
                   </span>
@@ -48,7 +49,7 @@ class Navigation extends React.Component<INavigationProps,
           <div className="navbar-end">
             <div className="navbar-item has-dropdown is-hoverable">
               <a className="navbar-link">
-                {this.props.email}
+                {(this.props.email === '') ? 'Menu' : this.props.email}
               </a>
               <div className="navbar-dropdown is-boxed is-right">
                 {!this.props.isLoggedIn
@@ -72,12 +73,12 @@ class Navigation extends React.Component<INavigationProps,
                         </span>
                         Settings
                       </Link>
-                      <a className="navbar-item" onClick={() => { alert('logout'); }}>
+                      <Link className="navbar-item" to="/user/logout">
                         <span className="icon">
                           <i className="fa fa-sign-out" aria-hidden="true" />
                         </span>
                         Logout
-                      </a>
+                      </Link>
                     </div>
                   )}
               </div>
@@ -90,8 +91,8 @@ class Navigation extends React.Component<INavigationProps,
   }
 }
 
-export function mapStateToProps({ login, user }: any) {
-  return { isLoggedIn: login.isLoggedIn, id: user.id, email: user.email };
+export function mapStateToProps({ login, user, search }: any) {
+  return { isLoggedIn: login.isLoggedIn, id: user.id, email: user.email, isSearching: search.isSearching };
 }
 
 export function mergeProps(stateProps: Object, dispatchProps: Object, ownProps: Object) {

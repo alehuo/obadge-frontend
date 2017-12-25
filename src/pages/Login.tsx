@@ -5,6 +5,8 @@ import axios, { AxiosResponse } from 'axios';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 
+import * as jwt from 'jsonwebtoken';
+
 // Login props
 export interface ILoginProps {
   isLoggingIn: boolean;
@@ -18,7 +20,7 @@ export interface ILoginDispatchProps {
   loggedIn: () => void;
   loginFailedInvalidCreds: () => void;
   loginFailedServerError: () => void;
-  setData: () => void;
+  setData: (data: any) => void;
 }
 
 // Login state
@@ -72,9 +74,15 @@ class Login extends React.Component<ILoginProps & ILoginDispatchProps,
       .then((res: AxiosResponse) => {
         if (res.data.success) {
           // Login is a success. Redirect to front page
-          this
-            .props
-            .loggedIn();
+          localStorage.setItem('token', res.data.payload.token);
+          let token: string | null = localStorage.getItem('token');
+          if (token !== null && this.props.setData !== undefined && this.props.loggedIn !== undefined) {
+            let userData: any = jwt.decode(token);
+            if (userData != null) {
+              this.props.setData(JSON.parse(userData.data)[0]);
+              this.props.loggedIn();
+            }
+          }
         }
       })
       .catch((err: Error) => {
@@ -171,9 +179,9 @@ export function mapDispatchToProps(dispatch: any) {
   return {
     loggingIn: () => dispatch({ type: 'LOGGING_IN' }),
     loggedIn: () => dispatch({ type: 'LOGGED_IN' }),
+    setData: (data: any) => dispatch({ type: 'SET_DATA', userData: data }),
     loginFailedInvalidCreds: () => dispatch({ type: 'LOGIN_FAILED_INVALID_CREDS' }),
-    loginFailedServerError: () => dispatch({ type: 'LOGIN_FAILED_SERVER_ERROR' }),
-    setData: () => dispatch({ type: 'SET_DATA', userData: 'HelloWorld' })
+    loginFailedServerError: () => dispatch({ type: 'LOGIN_FAILED_SERVER_ERROR' })
   };
 }
 

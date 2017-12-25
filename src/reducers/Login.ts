@@ -1,5 +1,5 @@
 // Login reducer is used to handle the login process.
-import { LOGGING_IN, LOGGED_IN, LOGIN_FAILED_INVALID_CREDS, LOGIN_FAILED_SERVER_ERROR } from '../constants';
+import { LOGGING_IN, LOGGED_IN, LOGGING_OUT, LOGGED_OUT, LOGIN_FAILED_INVALID_CREDS, LOGIN_FAILED_SERVER_ERROR } from '../constants';
 
 // Assign
 const assign = Object.assign;
@@ -25,6 +25,15 @@ export function loginReducer(state: ILoginInitialState = initialState, action: a
                 isLoggingIn: true,
                 isLoggedIn: false,
                 loginErrors: []
+            });
+        case LOGGING_OUT:
+            return assign({}, state, {
+                isLoggingOut: true
+            });
+        case LOGGED_OUT:
+            return assign({}, state, {
+                isLoggingOut: false,
+                isLoggedIn: false
             });
         case LOGGED_IN:
             return assign({}, state, {

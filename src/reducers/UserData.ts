@@ -1,5 +1,5 @@
 // Login reducer is used to handle the login process.
-import { SET_DATA } from '../constants';
+import { SET_DATA, RESET_DATA } from '../constants';
 
 // Assign
 const assign = Object.assign;
@@ -29,6 +29,8 @@ export function userDataReducer(state: IUserDataInitialState = initialState, act
                 firstName: action.userData.firstName,
                 lastName: action.userData.lastName
             });
+        case RESET_DATA:
+            return {} as IUserDataInitialState;
         default:
             return state;
     }
